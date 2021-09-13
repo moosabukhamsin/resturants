@@ -3,44 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class Provider extends User implements MustVerifyCellphoneInterface
+class Provider extends Authenticatable
 {
-    use HasFactory;
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    use HasApiTokens, HasFactory, Notifiable;
+
     protected $fillable = [
-        'name', 'email', 'password', 'bank_account',
+        'name',
+        'email',
+        'password',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'phone_verified_at' => 'datetime',
-        'phone_verification_expires_at' => 'datetime',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
-
-    public function restaurants()
-    {
-        return $this->hasMany(Restaurant::class);
-    }
-    use SoftDeletes;
 }
