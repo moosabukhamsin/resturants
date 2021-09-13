@@ -18,7 +18,6 @@ class CreateReservationsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('table_id')->constrained('tables');
             $table->foreignId('time_slot_id')->constrained('time_slots');
-            $table->date('date');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Provider extends User implements MustVerifyCellphoneInterface
 {
@@ -41,4 +42,5 @@ class Provider extends User implements MustVerifyCellphoneInterface
     {
         return $this->hasMany(Restaurant::class);
     }
+    use SoftDeletes;
 }

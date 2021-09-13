@@ -3,10 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\TimeSlot;
+use App\Services\TimeSlotService;
+use App\Http\Resources\TimeSlot as TimeSlotResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class TimeSlotController extends ApiController
 {
+    private $timeSlotService;
+
+    public function __construct(TimeSlotService $timeSlotService)
+    {
+        $this->timeSlotService = $timeSlotService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,18 +24,18 @@ class TimeSlotController extends ApiController
      */
     public function index()
     {
-        //
+        try {
+            
+            $timeSlots = TimeSlotResource::collection(TimeSlot::all());
+            return $timeSlots;
+        }
+        catch (Exception $exception)
+        {
+            
+            return 'fail';
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,42 +45,23 @@ class TimeSlotController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        try {
+            
+            $this->timeSlotService->validate($request->all());
+            $timeSlot = $this->timeSlotService->store($request->all());   
+            return new TimeSlotResource($timeSlot);
+        }
+        catch (Exception $exception)
+        {
+            return Response::json([
+                'msg' => 'fail'
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TimeSlot  $timeSlot
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TimeSlot $timeSlot)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TimeSlot  $timeSlot
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TimeSlot $timeSlot)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TimeSlot  $timeSlot
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TimeSlot $timeSlot)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -80,6 +71,18 @@ class TimeSlotController extends ApiController
      */
     public function destroy(TimeSlot $timeSlot)
     {
-        //
+        try {
+            $this->timeSlotService->delete($timeSlot);
+            return Response::json([
+                'msg' => 'success'
+            ], 200);
+        }
+        catch (Exception $exception)
+        {
+            
+            return Response::json([
+                'msg' => 'fail'
+            ], 500);
+        }
     }
 }

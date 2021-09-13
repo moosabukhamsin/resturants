@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TimeSlot extends Model
 {
@@ -14,6 +15,7 @@ class TimeSlot extends Model
      */
     protected $fillable = [
         'code',
+        'restaurant_id'
     ];
 
     public function restaurant()
@@ -22,4 +24,5 @@ class TimeSlot extends Model
     }
 
     use HasFactory;
+    use SoftDeletes;
 }

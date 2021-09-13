@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
@@ -13,9 +14,9 @@ class Reservation extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'address'
-
+        'user_id',
+        'table_id',
+        'time_slot_id'
     ];
 
     public function table()
@@ -28,4 +29,5 @@ class Reservation extends Model
         return $this->belongsTo(User::class);
     }
     use HasFactory;
+    use SoftDeletes;
 }
